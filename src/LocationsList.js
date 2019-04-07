@@ -7,7 +7,7 @@ class LocationsList extends Component {
         return (
             <div id="locations-list" className="list-group">
                {places.map( (place, index) => (
-                   <a href="#" className="list-group-item list-group-item-action" data-id={index} key={index} onClick={onLocationClicked}>{place.venue.name}</a>
+                   <button type="button" className="list-group-item list-group-item-action" data-lat={place.venue.location.lat} data-lng={place.venue.location.lng} key={index} onClick={onLocationClicked}>{place.venue.name}</button>
                ) )} 
             </div>
         );

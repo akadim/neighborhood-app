@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "create-react-class": "^15.6.3",
     "escape-string-regexp": "^1.0.5",
     "google-maps-react": "^2.0.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-script-loader": "0.0.1",
     "react-scripts": "2.1.8"
   },
   "scripts": {

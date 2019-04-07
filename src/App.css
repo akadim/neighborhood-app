@@ -20,3 +20,8 @@ html, body, #root, #root>div:first-child {
   cursor: pointer;
 }
 
+.infoWindow-image {
+  height: 100px;
+  width: 100px;
+}
+
