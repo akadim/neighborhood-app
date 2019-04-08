@@ -12,7 +12,6 @@ class LocationSearchForm extends Component {
     }
 
     searchPlace = (event) => {
-         console.log(this.state.query);
          event.preventDefault();
          let filteredPlaces;
          if(this.state.query && this.state.query !== '') {
@@ -27,9 +26,7 @@ class LocationSearchForm extends Component {
 
     render() {
         return (
-            <form className="full-width" onSubmit={ (event) => {
-                this.searchPlace(event)
-            } }>
+            <form className="full-width" method="post">
                 <div className="form-group">
                     <label htmlFor="locationName">Place to search</label>
                     <input type="text" 
@@ -41,7 +38,9 @@ class LocationSearchForm extends Component {
                            onChange={ (event) => {this.updateQuery(event.target.value)} }
                     />
                 </div>
-                <button type="submit" className="btn btn-primary" id="searchLocation">Search</button>
+                <button type="submit" className="btn btn-primary" id="searchLocation" onClick={ (event) => {
+                this.searchPlace(event)
+               }}>Search</button>
             </form>
         );
     }

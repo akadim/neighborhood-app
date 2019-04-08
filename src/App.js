@@ -1,5 +1,3 @@
-"use strict";
-
 import React, { Component } from 'react';
 import './App.css';
 import LocationSearchForm from './LocationSearchForm';
@@ -16,7 +14,7 @@ class App extends Component {
 
   componentDidMount() {
 
-    fetch('https://api.foursquare.com/v2/search/recommendations?client_id=CLIENT_ID&client_secret=CLIENT_SECRET&limit=10&v=20180323&ll=50.091521,14.433538&query=food')
+    fetch('https://api.foursquare.com/v2/search/recommendations?client_id=KDXSZH4CFJLAZOZHO4PXD2S2ZWCMILIFNPDTLY3FBQOPQOG0&client_secret=UL440FTV4FOYFGIR2EW4DWWTT4GQZG5MY2ZH2T4GB5AUHTPB&limit=10&v=20180323&ll=50.091521,14.433538&query=food')
       .then(response => response.json())
       .then(data => {
         this.setState({ 
@@ -25,11 +23,12 @@ class App extends Component {
        })
        this.renderMap();
       });
-
+      
+      this.renderMap();
   }
 
   renderMap = () => {
-      loadScript("https://maps.googleapis.com/maps/api/js?key=API_KEY&v=3&callback=initMap");
+      loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyDiSl8YnROsGNFrUA40vmOgB8xMcV3VJ48&v=3&callback=initMap");
       window.initMap = this.initMap;
   }
 
@@ -56,6 +55,7 @@ class App extends Component {
                   title: filteredPlaces[i].venue.name,
                   position: {lat: filteredPlaces[i].venue.location.lat, lng: filteredPlaces[i].venue.location.lng },
                   id: i,
+                  placeId: filteredPlaces[i].venue.id,
                   photo: filteredPlaces[i].photo.prefix + '100x100' + filteredPlaces[i].photo.suffix
               });
 
@@ -69,12 +69,13 @@ class App extends Component {
               bounds.extend({lat: filteredPlaces[i].venue.location.lat, lng: filteredPlaces[i].venue.location.lng});
 
               marker.addListener('click', function() {
-                  if(infoWindow.marker != marker) {
+                  if(infoWindow.marker !== marker) {
                       infoWindow.marker = marker;
                       infoWindow.setContent('<div>'+
-                                              '<center><h4>' + this.title  +'</h4>' +
-                                              '<img class="infoWindow-image" src="'+ this.photo  +'"/><br/><br/>' +
-                                              '<strong>lat:</strong> ' +this.position.lat()+ ', <strong>lng:</strong>' + this.position.lng() +
+                                              '<center>' +
+                                              '<img class="infoWindow-image" src="'+ this.photo  +'" alt="'+ this.title +'"/><br/><br/>' +
+                                              '<p>' + this.title  +'</p>' +
+                                              '<a alt="'+ this.title +' details" href="https://foursquare.com/v/' + this.title +'/'+ this.placeId +'" target="_blank">See more details</a>' +
                                               '</center>' + 
                                           '</div>');
                       infoWindow.open(map, this);
@@ -95,7 +96,7 @@ class App extends Component {
   }
 
   showLocationInfoWindow = (marker, infoWindow, map, place) => {
-      if(infoWindow.marker != marker) {
+      if(infoWindow.marker !== marker) {
           infoWindow.marker = marker;
           infoWindow.setContent('<div>'+
                                   '<strong>' + marker.title  +'</strong>' +
@@ -140,7 +141,9 @@ class App extends Component {
                   </div>
               </div>
               <div className="col-md-8 col-12">
-                 <div id="map"></div> 
+                 <div id="map">
+                    <span className="font-weight-bold pt-1 pl-1">Google Maps requires an internet connection and will not load until your connection has been re-established</span>
+                 </div> 
               </div>
       </div>
     );
@@ -148,19 +151,18 @@ class App extends Component {
 }
 
 function loadScript(url) {
-   if(!window.google) {
-      var index = document.getElementsByTagName('script')[0];
+   var index = document.getElementsByTagName('script')[0];
       var script = document.createElement('script');
       script.src = url;
       script.async = true;
       script.defer = true;
       script.onerror = function () {
           console.log("Something went wrong");
-          document.getElementById('map').innerHTML = "<h1>Sorry, We can't load the Map</h1>";
+          document.getElementById('map').style.backgroundColor = "grey";
+          document.getElementById('searchLocation').style.display = 'none';
       }
 
       index.parentNode.insertBefore(script, index);
-   }
 }
 
 export default App
